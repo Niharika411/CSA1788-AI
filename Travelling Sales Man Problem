@@ -1,65 +1,25 @@
-import random
-
-def randomSolution(tsp):
-    cities = list(range(len(tsp)))
-    solution = []
-
-    for i in range(len(tsp)):
-        randomCity = cities[random.randint(0, len(cities) - 1)]
-        solution.append(randomCity)
-        cities.remove(randomCity)
-
-    return solution
-
-def routeLength(tsp, solution):
-    routeLength = 0
-    for i in range(len(solution)):
-        routeLength += tsp[solution[i - 1]][solution[i]]
-    return routeLength
-
-def getNeighbours(solution):
-    neighbours = []
-    for i in range(len(solution)):
-        for j in range(i + 1, len(solution)):
-            neighbour = solution.copy()
-            neighbour[i] = solution[j]
-            neighbour[j] = solution[i]
-            neighbours.append(neighbour)
-    return neighbours
-
-def getBestNeighbour(tsp, neighbours):
-    bestRouteLength = routeLength(tsp, neighbours[0])
-    bestNeighbour = neighbours[0]
-    for neighbour in neighbours:
-        currentRouteLength = routeLength(tsp, neighbour)
-        if currentRouteLength < bestRouteLength:
-            bestRouteLength = currentRouteLength
-            bestNeighbour = neighbour
-    return bestNeighbour, bestRouteLength
-
-def hillClimbing(tsp):
-    currentSolution = randomSolution(tsp)
-    currentRouteLength = routeLength(tsp, currentSolution)
-    neighbours = getNeighbours(currentSolution)
-    bestNeighbour, bestNeighbourRouteLength = getBestNeighbour(tsp, neighbours)
-
-    while bestNeighbourRouteLength < currentRouteLength:
-        currentSolution = bestNeighbour
-        currentRouteLength = bestNeighbourRouteLength
-        neighbours = getNeighbours(currentSolution)
-        bestNeighbour, bestNeighbourRouteLength = getBestNeighbour(tsp, neighbours)
-
-    return currentSolution, currentRouteLength
-
-def main():
-    tsp = [
-        [0, 16, 11, 6],
-        [8, 0, 13, 16],
-        [4, 7, 0, 9],
-        [5, 12, 2, 0]
-    ]
-
-    print(hillClimbing(tsp))
-
+from sys import maxsize
+from itertools import permutations
+V = 4
+def travellingSalesmanProblem(graph, s):
+    vertex = []
+    for i in range(V):
+        if i != s:
+            vertex.append(i)
+    min_path = maxsize
+    next_permutation=permutations(vertex)
+    for i in next_permutation:
+        current_pathweight = 0
+        k = s
+        for j in i:
+            current_pathweight += graph[k][j]
+            k = j
+        current_pathweight += graph[k][s]
+        min_path = min(min_path, current_pathweight)   
+    return min_path
 if __name__ == "__main__":
-    main()
+    graph = [[0, 10, 15, 20], [10, 0, 35, 25],
+            [15, 35, 0, 30], [20, 25, 30, 0]]
+    s = 0
+    print(travellingSalesmanProblem(graph, s))
+
