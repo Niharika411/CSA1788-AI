@@ -1,0 +1,26 @@
+import random
+import math
+
+# Function to be optimized
+def objective_function(x):
+    return -x * math.sin(math.sqrt(abs(x)))
+
+# Simulated Annealing
+def simulated_annealing(objective_function, T_initial, T_min, alpha, max_iter):
+    x = random.uniform(-10, 10) # Initialize solution
+    T = T_initial
+    for i in range(max_iter):
+        x_new = x + random.uniform(-1, 1) # Generate new solution
+        delta = objective_function(x_new) - objective_function(x)
+        if delta > 0:
+            x = x_new
+        else:
+            p = math.exp(delta / T)
+            if random.uniform(0, 1) < p:
+                x = x_new
+        T = T*alpha
+        if T < T_min:
+            break
+    return x
+
+print(simulated_annealing(objective_function, 100, 0.01, 0.99, 10000))
