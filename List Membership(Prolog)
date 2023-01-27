@@ -1,0 +1,10 @@
+list_member(X,[X|_]).
+list_member(X,[_|TAIL]) :- list_member(X,TAIL).
+
+INPUT/OUTPUT
+?- 
+|    list_member(b,[a,b,c]).
+true .
+
+?- list_member(b,[a,[b,c]]).
+false.
