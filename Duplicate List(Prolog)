@@ -1,0 +1,10 @@
+% base case: an empty list has no duplicates
+deduplicate([], []).
+
+% recursive case: if the first element of the input list is not equal to the second,
+% include it in the output list
+deduplicate([X, Y | T], [X | R]) :- X \= Y, deduplicate([Y | T], R).
+
+% recursive case: if the first element of the input list is equal to the second,
+% skip it and call the function on the rest of the list
+deduplicate([X, X | T], R) :- deduplicate([X | T], R).
