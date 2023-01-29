@@ -1,4 +1,4 @@
-[6:47 pm, 29/01/2023] Hariiii: book_frame(Title, Author, ISBN, Publisher, Genre) :-
+book_frame(Title, Author, ISBN, Publisher, Genre) :-
     write('Title: '), write(Title), nl,
     write('Author: '), write(Author), nl,
     write('ISBN: '), write(ISBN), nl,
