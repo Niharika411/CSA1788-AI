@@ -1,0 +1,27 @@
+% define the state of the world
+% state(Room, HasBanana, OnFloor, MonkeyAt)
+
+% initial state
+state(room1, on_floor, room1, room1).
+
+% define the possible moves
+move(climb_up, room1, room2).
+move(climb_down, room2, room1).
+move(grab, on_floor, in_hand).
+move(release, in_hand, on_floor).
+
+% define the goal state
+goal_state(room2, in_hand, _, room2).
+
+% define the solve predicate
+solve(CurrentState) :-
+  goal_state(CurrentRoom, HasBanana, _, CurrentMonkey),
+  state(CurrentRoom, HasBanana, _, CurrentMonkey),
+  write(CurrentState).
+
+% search for a solution
+search(CurrentState, History) :-
+  move(Move, CurrentState, NextState),
+  not(member(NextState, History)),
+  write(Move), nl,
+  search(NextState, [NextState|History]).
