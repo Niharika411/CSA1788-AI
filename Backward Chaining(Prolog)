@@ -1,0 +1,23 @@
+% Define facts
+fact(a).
+fact(b).
+fact(c).
+
+% Define rules
+rule(x, [a, b]).
+rule(y, [b, c]).
+rule(z, [x, y]).
+
+% Define backward chaining predicate
+backward_chaining(Goal) :-
+  fact(Goal).
+
+backward_chaining(Goal) :-
+  rule(Goal, Premises),
+  check_premises(Premises).
+
+check_premises([Premise|Tail]) :-
+  backward_chaining(Premise),
+  check_premises(Tail).
+
+check_premises([]).
