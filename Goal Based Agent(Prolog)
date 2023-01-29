@@ -1,0 +1,46 @@
+% Define possible actions
+action(pickup(X)) :- holding(nothing), clear(X), location(X, loc).
+action(move(X)) :- location(agent, loc), location(X, loc).
+action(putdown(X)) :- holding(X).
+
+% Define preconditions for actions
+clear(X) :- not holding(X), not obstacle(X).
+
+% Define state
+location(agent, home).
+location(object1, home).
+location(object2, loc).
+holding(nothing).
+obstacle(object3).
+
+% Define goal state
+goal(holding(object1)).
+
+% Define plan to reach goal
+plan(Goal) :- goal(Goal), solve(Goal, [], []).
+solve(Goal, SoFar, Done) :- satisfies(Goal, SoFar), !, reverse(SoFar, Done).
+solve(Goal, SoFar, Done) :- applicable(Action, SoFar), transform(Action, SoFar, NewState),
+                            not(member(NewState, SoFar)),
+                            solve(Goal, [NewState|SoFar], Done).
+
+% Define applicable actions
+applicable(Action, SoFar) :- action(Action), condition(Action, SoFar).
+condition(pickup(X), SoFar) :- clear(X), location(X, loc, SoFar).
+condition(move(X), SoFar) :- location(agent, loc, SoFar), location(X, loc, SoFar).
+condition(putdown(X), SoFar) :- holding(X, SoFar).
+
+% Define state transformations
+transform(pickup(X), SoFar, [holding(X)|SoFar]).
+transform(move(X), SoFar, [location(agent, X)|SoFar]).
+transform(putdown(X), SoFar, [holding(nothing)|SoFar]).
+
+% Define state satisfaction
+satisfies(Goal, State) :- member(Goal, State).
+
+% Define location predicate
+location(X, Y, [location(X, Y)|_]).
+location(X, Y, [_|Tail]) :- location(X, Y, Tail).
+
+% Define holding predicate
+holding(X, [holding(X)|_]).
+holding(X, [_|Tail]) :- holding(X, Tail).
