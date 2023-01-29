@@ -1,0 +1,14 @@
+import networkx as nx
+
+# Create an empty semantic network
+semantic_network = nx.Graph()
+
+# Add nodes (concepts) to the network
+semantic_network.add_node("dog")
+semantic_network.add_node("animal")
+semantic_network.add_node("mammal")
+
+# Add edges (relationships) to the network
+semantic_network.add_edge("dog", "animal")
+semantic_network.add_edge("dog", "mammal")
+semantic_network.add_edge("animal", "mammal")
