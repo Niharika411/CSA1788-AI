@@ -1,0 +1,11 @@
+run_length_encode([], []).
+run_length_encode([H|T], [[N, H]|R]) :-
+    count(H, T, N, Rest),
+    run_length_encode(Rest, R).
+
+count(H, [], 1, []).
+count(H, [H|T], N1, Rest) :-
+    count(H, T, N2, Rest),
+    N1 is N2 + 1.
+count(H, [H1|T], 1, [H1|T]) :-
+    H \= H1.
